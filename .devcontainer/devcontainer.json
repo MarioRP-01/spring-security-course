@@ -15,7 +15,8 @@
 			"extensions": [
 				"ms-azuretools.vscode-docker",
 				"vmware.vscode-boot-dev-pack",
-				"GitHub.copilot-chat"
+				"GitHub.copilot-chat",
+				"vscjava.vscode-gradle"
 			]
 		}
 	}
