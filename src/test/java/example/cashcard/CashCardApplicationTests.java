@@ -15,6 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -36,6 +37,7 @@ class CashCardApplicationTests {
     @DirtiesContext
     void shouldCreateANewCashCard() throws Exception {
         String location = this.mvc.perform(post("/cashcards")
+                        .with(SecurityMockMvcRequestPostProcessors.csrf())
                         .contentType("application/json")
                         .content("""
                         {
