@@ -19,7 +19,8 @@
 				"vscjava.vscode-gradle",
 				"inferrinizzard.prettier-sql-vscode",
 				"mtxr.sqltools",
-				"mtxr.sqltools-driver-pg"
+				"mtxr.sqltools-driver-pg",
+				"vscjava.vscode-java-pack"
 			]
 		}
 	}
