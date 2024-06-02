@@ -16,7 +16,10 @@
 				"ms-azuretools.vscode-docker",
 				"vmware.vscode-boot-dev-pack",
 				"GitHub.copilot-chat",
-				"vscjava.vscode-gradle"
+				"vscjava.vscode-gradle",
+				"inferrinizzard.prettier-sql-vscode",
+				"mtxr.sqltools",
+				"mtxr.sqltools-driver-pg"
 			]
 		}
 	}
