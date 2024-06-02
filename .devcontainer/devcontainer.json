@@ -15,6 +15,7 @@
 			"extensions": [
 				"ms-azuretools.vscode-docker",
 				"vmware.vscode-boot-dev-pack",
+				"GitHub.copilot",
 				"GitHub.copilot-chat",
 				"vscjava.vscode-gradle",
 				"inferrinizzard.prettier-sql-vscode",
