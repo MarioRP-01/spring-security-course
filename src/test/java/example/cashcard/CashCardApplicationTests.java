@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -35,6 +37,8 @@ class CashCardApplicationTests {
 
     @Test
     @DirtiesContext
+    @Transactional
+    @Rollback
     void shouldCreateANewCashCard() throws Exception {
         String location = this.mvc.perform(post("/cashcards")
                         .with(SecurityMockMvcRequestPostProcessors.csrf())
@@ -56,6 +60,8 @@ class CashCardApplicationTests {
     }
 
     @Test
+    @Transactional
+    @Rollback
     void shouldReturnAllCashCardsWhenListIsRequested() throws Exception {
         this.mvc.perform(get("/cashcards"))
                 .andExpect(status().isOk())
