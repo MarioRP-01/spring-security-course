@@ -3,8 +3,6 @@ package example.cashcard;
 import java.net.URI;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.CurrentSecurityContext;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,9 +34,14 @@ public class CashCardController {
     }
 
     @PostMapping
-    private ResponseEntity<CashCard> createCashCard(@RequestBody CashCard newCashCardRequest,
-            UriComponentsBuilder ucb) {
-        CashCard savedCashCard = cashCards.save(newCashCardRequest);
+    private ResponseEntity<CashCard> createCashCard(
+            @RequestBody CashCardRequest cashCardRequest,
+            UriComponentsBuilder ucb,
+            @CurrentOwner String owner) {
+
+        var cashCard = new CashCard(cashCardRequest.amount(), owner);
+
+        CashCard savedCashCard = cashCards.save(cashCard);
         URI locationOfNewCashCard = ucb
                 .path("cashcards/{id}")
                 .buildAndExpand(savedCashCard.id())
