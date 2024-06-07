@@ -20,10 +20,24 @@ public class ProblemDetailsAuthenticationEntryPoint implements AuthenticationEnt
 
 	private final AuthenticationEntryPoint delegate = new BearerTokenAuthenticationEntryPoint();
 
-	@Override
-    public void commence(HttpServletRequest request, HttpServletResponse response,
-            AuthenticationException authException) throws IOException, ServletException {
+	private final ObjectMapper mapper;
 
-            this.delegate.commence(request, response, authException);
-    }
+	public ProblemDetailsAuthenticationEntryPoint(ObjectMapper mapper) {
+		this.mapper = mapper;
+	}
+
+	@Override
+	public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException)
+			throws IOException, ServletException {
+
+		this.delegate.commence(request, response, authException);
+
+		if (authException.getCause() instanceof JwtValidationException validation) {
+			ProblemDetail detail = ProblemDetail.forStatus(401);
+			detail.setType(URI.create("https://tools.ietf.org/html/rfc6750#section-3.1"));
+			detail.setTitle("Invalid Token");
+			detail.setProperty("errors", validation.getErrors());
+			this.mapper.writeValue(response.getWriter(), detail);
+		}
+	}
 }
