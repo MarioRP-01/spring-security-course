@@ -27,7 +27,7 @@ public class CashCardApplication {
 	) throws Exception {
 
 		http
-			.authorizeHttpRequests((authorize) -> authorize.anyRequest().authenticated())
+			.authorizeHttpRequests((authz) -> authz.anyRequest().authenticated())
 			.oauth2ResourceServer((oauth2) -> oauth2
 				.authenticationEntryPoint(entryPoint)
 				.jwt(Customizer.withDefaults()));
