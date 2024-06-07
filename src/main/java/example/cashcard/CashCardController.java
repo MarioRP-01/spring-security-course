@@ -50,9 +50,8 @@ public class CashCardController {
     }
 
     @GetMapping
-    public ResponseEntity<Iterable<CashCard>> findAll(
-            @CurrentOwner String owner) {
-        var result = this.cashCards.findByOwner(owner);
+    public ResponseEntity<Iterable<CashCard>> findAll() {
+        var result = this.cashCards.findAll();
         return ResponseEntity.ok(result);
     }
 }
