@@ -58,17 +58,6 @@ public class CashCardSpringSecurityTests {
 		return this.jwtEncoder.encode(parameters).getTokenValue();
 	}
 
-
-	@TestConfiguration
-	static class TestJwtConfiguration {
-		@Bean
-		JwtEncoder jwtEncoder(@Value("classpath:authz.pub") RSAPublicKey pub,
-							  @Value("classpath:authz.pem") RSAPrivateKey pem) {
-			RSAKey key = new RSAKey.Builder(pub).privateKey(pem).build();
-			return new NimbusJwtEncoder(new ImmutableJWKSet<>(new JWKSet(key)));
-		}
-	}
-
     @Test
 	void shouldRequireValidTokens() throws Exception {
 		String token = mint();
@@ -108,4 +97,14 @@ public class CashCardSpringSecurityTests {
                 .andExpect(jsonPath("$.errors..description").value(
                             containsInAnyOrder(containsString("Jwt expired"), containsString("aud claim is not valid"))));
     }
+
+	@TestConfiguration
+	static class TestJwtConfiguration {
+		@Bean
+		JwtEncoder jwtEncoder(@Value("classpath:authz.pub") RSAPublicKey pub,
+							  @Value("classpath:authz.pem") RSAPrivateKey pem) {
+			RSAKey key = new RSAKey.Builder(pub).privateKey(pem).build();
+			return new NimbusJwtEncoder(new ImmutableJWKSet<>(new JWKSet(key)));
+		}
+	}
 }
