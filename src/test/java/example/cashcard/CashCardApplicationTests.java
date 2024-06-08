@@ -7,13 +7,13 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.MockMvc;
@@ -21,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@WithMockUser(username = "sarah1")
+@WithMockUser(username = "sarah1", authorities = {"SCOPE_cashcard:read", "SCOPE_cashcard:write"})
 class CashCardApplicationTests {
 
     @Autowired
@@ -36,12 +36,13 @@ class CashCardApplicationTests {
     }
 
     @Test
+    @WithMockUser(username="esuez5", authorities = {"SCOPE_cashcard:read", "SCOPE_cashcard:write"})
     @DirtiesContext
     @Transactional
     @Rollback
     void shouldCreateANewCashCard() throws Exception {
         String location = this.mvc.perform(post("/cashcards")
-                        .with(SecurityMockMvcRequestPostProcessors.csrf())
+                .with(csrf())
                         .contentType("application/json")
                         .content("""
                         {
@@ -55,7 +56,7 @@ class CashCardApplicationTests {
         this.mvc.perform(get(location))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.amount").value(250.00))
-                .andExpect(jsonPath("$.owner").value("sarah1"));
+                .andExpect(jsonPath("$.owner").value("esuez5"));
     }
 
     @Test
